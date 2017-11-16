@@ -1,4 +1,6 @@
-const authentication = require('your-authentication-module-here')
+require('dotenv').config()
+const passport = require('passport')
+const session = require('express-session')
 const ConnectRoles = require('connect-roles')
 const express = require('express')
 
@@ -44,7 +46,7 @@ user.use((req) => {
   }
 })
 
-
+// Routes
 app.get('/', user.can('access home page'), (req, res) => {
   res.render('private')
 })
@@ -55,4 +57,12 @@ app.get('/admin', user.can('access admin page'), (req, res) => {
   res.render('admin')
 })
 
-app.listen(3000)
+// Services
+const port = process.env.APP_PORT || 8080
+const host = process.env.APP_HOST || 'localhost'
+
+app.listen(port, () => {
+  console.log(`Listening on ${host}:${port}`)
+})
+
+module.exports = app
